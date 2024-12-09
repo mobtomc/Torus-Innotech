@@ -16,10 +16,10 @@ const initialUsers = [
 ];
 
 const UserManagementDashboard = () => {
-    const [users, setUsers] = useState<User[]>(initialUsers);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [searchTerm, setSearchTerm] = useState<string>('');
-    const usersPerPage = 5;
+  const [users, setUsers] = useState<User[]>(initialUsers);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const usersPerPage = 5;
 
   // Filter users by search term
   const filteredUsers = users.filter(user => 
@@ -33,17 +33,16 @@ const UserManagementDashboard = () => {
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   // Delete user handler
-  const handleDeleteUser = (userId) => {
+  const handleDeleteUser = (userId: number) => {
     setUsers(users.filter(user => user.id !== userId));
   };
 
   // Pagination handler
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div className="p-4 w-full">
-    
-      
+
       <div className="mb-4">
         <input 
           type="text" 
@@ -53,45 +52,43 @@ const UserManagementDashboard = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border p-2">ID</th>
-            <th className="border p-2">Name</th>
-            <th className="border p-2">Email</th>
-            <th className="border p-2">Status</th>
-            <th className="border p-2">Region</th>
-            <th className="border p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentUsers.map(user => (
-            <tr key={user.id}>
-              <td className="border p-2">{user.id}</td>
-              <td className="border p-2">{user.name}</td>
-              <td className="border p-2">{user.email}</td>
-              <td className="border p-2">
-                <span className={`px-2 py-1 rounded ${
-                  user.status === 'active' ? 'bg-green-200' : 'bg-red-200'
-                }`}>
-                  {user.status}
-                </span>
-              </td>
-              <td className="border p-2">{user.region}</td>
-              <td className="border p-2">
-                <button 
-                  className="bg-red-500 text-white px-2 py-1 rounded mr-2"
-                  onClick={() => handleDeleteUser(user.id)}
-                >
-                  Delete
-                </button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border p-2 text-sm sm:text-base">ID</th>
+              <th className="border p-2 text-sm sm:text-base">Name</th>
+              <th className="border p-2 text-sm sm:text-base">Email</th>
+              <th className="border p-2 text-sm sm:text-base">Status</th>
+              <th className="border p-2 text-sm sm:text-base">Region</th>
+              <th className="border p-2 text-sm sm:text-base">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
+          </thead>
+          <tbody>
+            {currentUsers.map(user => (
+              <tr key={user.id} className="text-sm sm:text-base">
+                <td className="border p-2">{user.id}</td>
+                <td className="border p-2">{user.name}</td>
+                <td className="border p-2">{user.email}</td>
+                <td className="border p-2">
+                  <span className={`px-2 py-1 rounded ${user.status === 'active' ? 'bg-green-200' : 'bg-red-200'}`}>
+                    {user.status}
+                  </span>
+                </td>
+                <td className="border p-2">{user.region}</td>
+                <td className="border p-2">
+                  <button 
+                    className="bg-red-500 text-white px-2 py-1 rounded mr-2"
+                    onClick={() => handleDeleteUser(user.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <div className="flex justify-center mt-4">
         {Array.from({ length: Math.ceil(filteredUsers.length / usersPerPage) }, (_, i) => (
           <button 
